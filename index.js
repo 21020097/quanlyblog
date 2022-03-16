@@ -10,7 +10,9 @@ app.set('view engine','hbs');
 const session = require('express-session');
 app.use(session({
     secret: 'padv',
-    cookie: {maxAge:60000}
+    cookie: {maxAge:60000000}
 }));
 app.use('/',require('./routes/pages'));
 app.use('/',require('./routes/myHomePage'));
+app.use('/homepage',require('./routes/homepage'));
+app.use('/user',require('./routes/user'));

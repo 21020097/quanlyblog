@@ -31,7 +31,7 @@ router.post('/login',(req,res) =>{
             return res.render('login',{message:"Sai mật khẩu"});
         }
         
-        const jsonObject = {email : email}
+        const jsonObject = {email : email,isAdmin : result[0].isAdmin};
 
         const tokenKey = jwt.sign(jsonObject,'secret',{expiresIn: 8640});
 

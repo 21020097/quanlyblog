@@ -7,7 +7,9 @@ router.get('/myHomePage',(req,res)=>{
     console.log(tokenKey);
     if(tokenKey)
     {
-        res.render('myHomePage',{message : verify(tokenKey,'secret').email});
+        const {email,isAdmin} = verify(tokenKey,'secret');
+        if(!isAdmin) res.redirect('http://localhost:8080/homepage/user');
+        else         res.redirect('http://localhost:8080/homepage/admin');
     }
     else res.redirect('http://localhost:8080/login');
 });
