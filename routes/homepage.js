@@ -3,24 +3,29 @@ const { verify } = require('jsonwebtoken');
 const router = express.Router();
 const db = require('../database/database');
 const render_homepage = require('../fs/user_homepage');
-
+const render_homepage_admin = require('../fs/admin_homepage');
 
 router.get('/admin',(req,res)=>
 {
     const tokenKey = req.session.tokenKey;
     if(tokenKey)
     {
-        const verify1= verify(tokenKey,'secret');
-        const isAdmin = verify1.isAdmin;
-        const email = verify1.email;
-        console.log(email);
+        const {email,isAdmin} = verify(tokenKey,'secret');
         if(isAdmin)
         {
-            res.render('admin_homepage');
+            db.query('SELECT * FROM blog',(err,resulf)=>{
+                let html = "";
+                for(var ob of resulf) html=
+                `<button class="accordion">${ob.title} - ${ob.email}</button>
+                <div class="panel">
+                  <p>${ob.content}</p>
+                </div>`+html;
+                return res.send(render_homepage_admin.left+html +render_homepage_admin.right);
+            })
         }
-        else res.redirect('http://localhost:8080/login');
+        else res.redirect('/login');
     }
-    else res.redirect('http://localhost:8080/login');
+    else res.redirect('/login');
 });
 
 router.get('/user',(req,res)=>
@@ -34,25 +39,18 @@ router.get('/user',(req,res)=>
            
             db.query('SELECT * FROM blog',(err,resulf)=>{
                 let html = "";
-                for(var ob of resulf) html=html+
+                for(var ob of resulf) html=
                 `<button class="accordion">${ob.title} - ${ob.email}</button>
                 <div class="panel">
                   <p>${ob.content}</p>
-                </div>`
+                </div>`+html;
                 return res.send(render_homepage.left+html +render_homepage.right);
             })
         }
-        else res.redirect('http://localhost:8080/login');
+        else res.redirect('/login');
     }
-    else res.redirect('http://localhost:8080/login');
+    else res.redirect('/login');
 });
 
-
-router.get('/blog',(req,res)=>
-{
-    db.query("SELECT * FROM blog",(error,resuft)=>{
-        return res.render('public_homepage',{data : resuft});
-    })
-})
 
 module.exports = router;

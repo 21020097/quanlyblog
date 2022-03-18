@@ -16,3 +16,4 @@ app.use('/',require('./routes/pages'));
 app.use('/',require('./routes/myHomePage'));
 app.use('/homepage',require('./routes/homepage'));
 app.use('/user',require('./routes/user'));
+app.use('/admin',require('./routes/admin'));

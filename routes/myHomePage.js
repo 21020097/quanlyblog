@@ -8,15 +8,15 @@ router.get('/myHomePage',(req,res)=>{
     if(tokenKey)
     {
         const {email,isAdmin} = verify(tokenKey,'secret');
-        if(!isAdmin) res.redirect('http://localhost:8080/homepage/user');
-        else         res.redirect('http://localhost:8080/homepage/admin');
+        if(!isAdmin) res.redirect('/homepage/user');
+        else         res.redirect('/homepage/admin');
     }
-    else res.redirect('http://localhost:8080/login');
+    else res.redirect('/login');
 });
 
 router.get('/logout',(req,res)=>
 {
     req.session.destroy();
-    res.redirect('http://localhost:8080/login');
+    res.redirect('/login');
 });
 module.exports = router;

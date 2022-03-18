@@ -4,7 +4,7 @@ const dp = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     pass: '',
-    database: 'blog',
+    database: 'manage_blog',
 })
 
 dp.connect(()=>console.log('Connected database!'));

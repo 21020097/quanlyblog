@@ -31,12 +31,16 @@ router.post('/login',(req,res) =>{
             return res.render('login',{message:"Sai mật khẩu"});
         }
         
+        if(result[0].isBan ==='lock')
+        {
+            return res.render('login',{message:"Tài khoản của bạn đã bị khóa!"});
+        }
         const jsonObject = {email : email,isAdmin : result[0].isAdmin};
 
         const tokenKey = jwt.sign(jsonObject,'secret',{expiresIn: 8640});
 
         req.session.tokenKey = tokenKey;
-        return res.redirect('http://localhost:8080/myHomePage');
+        return res.redirect('/myHomePage');
     });
     console.log('done!');
 })
